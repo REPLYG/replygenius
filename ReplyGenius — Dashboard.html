@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/t/Downloads/dashboard_4.html -->
+<!-- saved from url=(0045)file:///C:/Users/t/Downloads/dashboard_5.html -->
 <html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -346,6 +346,10 @@
       <option value="hotel">Hôtel / Hébergement</option>
       <option value="autre">Autre</option>
     </select>
+    <label class="field-label">Supabase URL</label>
+    <input type="text" class="field-input" id="supabaseUrl" placeholder="https://xxx.supabase.co">
+    <label class="field-label">Supabase Anon Key</label>
+    <input type="text" class="field-input" id="supabaseKey" placeholder="eyJ...">
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="saveConfig()">Lancer le dashboard →</button>
     </div>
@@ -415,7 +419,7 @@
     <span class="sidebar-section">Navigation</span>
     <a class="nav-item active" onclick="showTab(&#39;reviews&#39;)">
       <span class="nav-icon">💬</span> Avis
-      <span class="badge badge-amber" style="margin-left:auto;font-size:10px" id="pendingCount">5</span>
+      <span class="badge badge-amber" style="margin-left:auto;font-size:10px" id="pendingCount">7</span>
     </a>
     <a class="nav-item" onclick="showTab(&#39;stats&#39;)">
       <span class="nav-icon">📊</span> Statistiques
@@ -458,12 +462,12 @@
       <div class="metrics">
         <div class="metric-card">
           <div class="metric-label">Avis ce mois</div>
-          <div class="metric-val" id="m-total">7</div>
+          <div class="metric-val" id="m-total">9</div>
           <div class="metric-delta">↑ +8 vs mois dernier</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Taux de réponse</div>
-          <div class="metric-val" id="m-rate">29%</div>
+          <div class="metric-val" id="m-rate">22%</div>
           <div class="metric-delta">✓ Automatique</div>
         </div>
         <div class="metric-card">
@@ -490,7 +494,53 @@
               <button class="filter-chip" onclick="filterReviews(&#39;negative&#39;,this)">Négatifs ⚠️</button>
             </div>
           </div>
-          <div id="reviews-container"><div class="review-row" data-id="1778283353118" data-status="pending" data-stars="5">
+          <div id="reviews-container"><div class="review-row" data-id="1778283527582" data-status="pending" data-stars="5">
+      <div class="review-top">
+        <div class="avatar" style="background:#E6F1FB;color:#185FA5">LM</div>
+        <div class="review-info">
+          <div class="review-name">Lucas Morel</div>
+          <div class="review-meta"><span class="stars">★★★★★</span> · À l'instant</div>
+        </div>
+        <span class="badge badge-amber">En attente</span>
+      </div>
+      <div class="review-text">Incroyable ! La brioche du dimanche est une merveille. Je fais un détour exprès pour venir ici.</div>
+      <div class="ai-box " id="aibox-1778283527582" style="display: block;">
+            <div class="ai-box-header">✨ Réponse générée par l'IA</div>
+            <div class="ai-box-text" id="aitext-1778283527582"><span style="color:var(--red)">Erreur : invalid x-api-key. Vérifiez votre clé API dans Configuration.</span></div>
+          </div>
+      
+      <div class="review-actions" id="actions-1778283527582">
+        <span style="font-size:11px;color:var(--muted)">Ton :</span>
+        <div class="tone-group"><button class="tone-pill active" onclick="changeTone(1778283527582,&#39;chaleureux&#39;,this)">chaleureux</button><button class="tone-pill " onclick="changeTone(1778283527582,&#39;professionnel&#39;,this)">professionnel</button><button class="tone-pill " onclick="changeTone(1778283527582,&#39;bref&#39;,this)">bref</button></div>
+        <div class="spacer"></div>
+        <button class="btn" onclick="generateReply(1778283527582,&#39;chaleureux&#39;)">✨ Générer</button>
+        <button class="btn" onclick="regenerate(1778283527582)">↺ Regénérer</button>
+        <button class="btn btn-primary" onclick="publishReply(1778283527582)">Publier →</button>
+      </div>
+    </div><div class="review-row" data-id="1778283506022" data-status="pending" data-stars="5">
+      <div class="review-top">
+        <div class="avatar" style="background:#E6F1FB;color:#185FA5">LM</div>
+        <div class="review-info">
+          <div class="review-name">Lucas Morel</div>
+          <div class="review-meta"><span class="stars">★★★★★</span> · À l'instant</div>
+        </div>
+        <span class="badge badge-amber">En attente</span>
+      </div>
+      <div class="review-text">Incroyable ! La brioche du dimanche est une merveille. Je fais un détour exprès pour venir ici.</div>
+      <div class="ai-box " id="aibox-1778283506022" style="display: block;">
+            <div class="ai-box-header">✨ Réponse générée par l'IA</div>
+            <div class="ai-box-text" id="aitext-1778283506022"><span style="color:var(--red)">Erreur : invalid x-api-key. Vérifiez votre clé API dans Configuration.</span></div>
+          </div>
+      
+      <div class="review-actions" id="actions-1778283506022">
+        <span style="font-size:11px;color:var(--muted)">Ton :</span>
+        <div class="tone-group"><button class="tone-pill active" onclick="changeTone(1778283506022,&#39;chaleureux&#39;,this)">chaleureux</button><button class="tone-pill " onclick="changeTone(1778283506022,&#39;professionnel&#39;,this)">professionnel</button><button class="tone-pill " onclick="changeTone(1778283506022,&#39;bref&#39;,this)">bref</button></div>
+        <div class="spacer"></div>
+        <button class="btn" onclick="generateReply(1778283506022,&#39;chaleureux&#39;)">✨ Générer</button>
+        <button class="btn" onclick="regenerate(1778283506022)">↺ Regénérer</button>
+        <button class="btn btn-primary" onclick="publishReply(1778283506022)">Publier →</button>
+      </div>
+    </div><div class="review-row" data-id="1778283353118" data-status="pending" data-stars="5">
       <div class="review-top">
         <div class="avatar" style="background:#E6F1FB;color:#185FA5">LM</div>
         <div class="review-info">
@@ -651,7 +701,7 @@
       <div class="chart-label">5 ★</div>
       <div class="chart-bar-wrap">
         <div class="chart-bar" style="width:100%;background:#1D9E75">
-          <span class="chart-val">5</span>
+          <span class="chart-val">7</span>
         </div>
       </div>
     </div>
@@ -659,7 +709,7 @@
     <div class="chart-row">
       <div class="chart-label">4 ★</div>
       <div class="chart-bar-wrap">
-        <div class="chart-bar" style="width:20%;background:#0F6E56">
+        <div class="chart-bar" style="width:14%;background:#0F6E56">
           <span class="chart-val">1</span>
         </div>
       </div>
@@ -677,7 +727,7 @@
     <div class="chart-row">
       <div class="chart-label">2 ★</div>
       <div class="chart-bar-wrap">
-        <div class="chart-bar" style="width:20%;background:#854F0B">
+        <div class="chart-bar" style="width:14%;background:#854F0B">
           <span class="chart-val">1</span>
         </div>
       </div>
@@ -765,10 +815,14 @@ function saveConfig() {
   apiKey = document.getElementById('apiKeyInput').value.trim();
   businessName = document.getElementById('businessInput').value.trim();
   businessType = document.getElementById('businessType').value;
-  if (!apiKey || !businessName) { alert('Veuillez remplir tous les champs.'); return; }
+  const supabaseUrl = document.getElementById('supabaseUrl').value.trim();
+  const supabaseKey = document.getElementById('supabaseKey').value.trim();
+  if (!apiKey || !businessName) { alert('Veuillez remplir tous les champs obligatoires.'); return; }
   localStorage.setItem('rg_api_key', apiKey);
   localStorage.setItem('rg_business', businessName);
   localStorage.setItem('rg_type', businessType);
+  if (supabaseUrl) localStorage.setItem('rg_supabase_url', supabaseUrl);
+  if (supabaseKey) localStorage.setItem('rg_supabase_key', supabaseKey);
   document.getElementById('apiModal').style.display = 'none';
   initDashboard();
 }
@@ -1063,7 +1117,59 @@ function showNotif(msg, type = '') {
   setTimeout(() => n.classList.remove('show'), 3000);
 }
 
-function saveReviews() { localStorage.setItem('rg_reviews', JSON.stringify(reviewsData)); }
+function saveReviews() { 
+  localStorage.setItem('rg_reviews', JSON.stringify(reviewsData));
+  syncToSupabase();
+}
+
+// ========== SUPABASE SYNC ==========
+async function syncToSupabase() {
+  const url = localStorage.getItem('rg_supabase_url');
+  const key = localStorage.getItem('rg_supabase_key');
+  if (!url || !key) return;
+
+  try {
+    // Sauvegarde le commerçant
+    await fetch(`${url}/rest/v1/merchants`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': key,
+        'Authorization': `Bearer ${key}`,
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify({
+        email: localStorage.getItem('rg_email') || 'demo@replygenius.fr',
+        business_name: businessName,
+        business_type: businessType,
+        plan: 'pro'
+      })
+    });
+
+    // Sauvegarde les avis répondus
+    const sentReviews = reviewsData.filter(r => r.status === 'sent' && r.reply);
+    for (const r of sentReviews) {
+      await fetch(`${url}/rest/v1/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify({
+          author_name: r.name,
+          rating: r.stars,
+          review_text: r.text,
+          ai_reply: r.reply,
+          status: 'sent'
+        })
+      });
+    }
+  } catch(e) {
+    console.log('Supabase sync:', e.message);
+  }
+}
 </script>
 
 
