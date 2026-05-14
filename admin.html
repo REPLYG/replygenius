@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReplyGenius — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#080808;--dark:#0F0F0F;--dark2:#181818;--gold:#C9A84C;--gold2:#E8C97A;--white:#FAF9F6;--muted:#888;--border:rgba(201,168,76,0.15);--border2:rgba(255,255,255,0.07);--green:#16A669;--red:#DC2626}
+body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);min-height:100vh;display:flex}
+
+/* LOGIN */
+.login-screen{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:200}
+.login-box{background:var(--dark);border:1px solid var(--border);padding:48px;width:360px;text-align:center}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:.05em;margin-bottom:8px}
+.login-sub{font-size:12px;color:var(--muted);margin-bottom:32px;letter-spacing:.06em;text-transform:uppercase}
+.login-input{width:100%;padding:13px 16px;border:1px solid var(--border2);background:var(--dark2);color:var(--white);font-family:'Jost',sans-serif;font-size:14px;outline:none;margin-bottom:12px;border-radius:2px;font-weight:300}
+.login-input:focus{border-color:rgba(201,168,76,0.4)}
+.login-btn{width:100%;padding:13px;background:var(--gold);color:var(--black);border:none;font-family:'Jost',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.login-btn:hover{background:var(--gold2)}
+.login-err{font-size:12px;color:var(--red);margin-top:8px;display:none}
+
+/* SIDEBAR */
+.sidebar{width:220px;background:var(--dark);border-right:1px solid var(--border);padding:28px 20px;display:flex;flex-direction:column;gap:4px;position:fixed;top:0;left:0;bottom:0}
+.s-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:20px;letter-spacing:.05em}
+.s-logo-star{width:24px;height:24px;border:1px solid var(--border);display:grid;place-items:center;font-size:11px}
+.s-section{font-size:9px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;padding:12px 10px 4px;margin-top:8px}
+.s-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:2px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;text-decoration:none;font-weight:400}
+.s-item:hover,.s-item.on{background:rgba(201,168,76,0.07);color:var(--gold)}
+.s-badge{margin-left:auto;background:var(--gold);color:var(--black);font-size:9px;font-weight:700;padding:2px 7px;border-radius:2px}
+
+/* MAIN */
+.main{margin-left:220px;flex:1}
+.topbar{height:64px;background:var(--dark);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:10}
+.topbar-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--white)}
+.topbar-sub{font-size:12px;color:var(--muted);margin-left:4px}
+.topbar-r{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tbtn{padding:8px 18px;font-family:'Jost',sans-serif;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:2px;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--muted);transition:all .2s}
+.tbtn:hover{border-color:var(--gold);color:var(--gold)}
+.tbtn.gold{background:var(--gold);color:var(--black);border-color:var(--gold)}
+.tbtn.gold:hover{background:var(--gold2)}
+
+.content{padding:28px}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.mc{background:var(--dark);border:1px solid var(--border2);padding:24px;border-radius:2px}
+.mc.gold-border{border-color:rgba(201,168,76,0.25)}
+.mc-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.mc-val{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:5px}
+.mc-delta{font-size:12px;color:var(--muted)}
+.mc-delta.up{color:#16A669}
+
+/* TABLE */
+.panel{background:var(--dark);border:1px solid var(--border2);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.panel-head{padding:16px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+.panel-title{font-size:13px;font-weight:600;color:var(--white);letter-spacing:.04em}
+.table{width:100%;border-collapse:collapse}
+.table th{padding:11px 20px;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;text-align:left;border-bottom:1px solid var(--border2)}
+.table td{padding:14px 20px;font-size:13px;color:rgba(255,255,255,.75);border-bottom:1px solid var(--border2);font-weight:300}
+.table tr:last-child td{border-bottom:none}
+.table tr:hover td{background:rgba(201,168,76,0.03)}
+.plan-tag{display:inline-block;font-size:10px;font-weight:600;padding:3px 9px;border-radius:2px;letter-spacing:.06em;text-transform:uppercase}
+.plan-starter{border:1px solid var(--border2);color:var(--muted)}
+.plan-pro{border:1px solid rgba(201,168,76,0.3);color:var(--gold)}
+.plan-agency{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.4);color:var(--gold2)}
+.status-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:6px}
+.status-active{background:#16A669}
+.status-trial{background:var(--gold)}
+.status-inactive{background:var(--muted)}
+.action-btn{padding:5px 12px;font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.06em;border-radius:2px;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--muted);transition:all .2s;text-transform:uppercase}
+.action-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* REVENUE CHART */
+.rev-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:20px}
+.chart{background:var(--dark);border:1px solid var(--border2);padding:24px;border-radius:2px}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:20px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.bar{width:100%;background:rgba(201,168,76,0.15);border-radius:2px;transition:height .8s ease;position:relative}
+.bar::after{content:attr(data-val);position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--gold);white-space:nowrap;font-weight:500}
+.bar-month{font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.summary-box{background:var(--dark);border:1px solid var(--border2);padding:24px;border-radius:2px;display:flex;flex-direction:column;gap:16px}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border2)}
+.sum-row:last-child{border:none}
+.sum-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.sum-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold)}
+
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border2);margin-bottom:20px}
+.tab{padding:12px 20px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);border-bottom:1px solid transparent;transition:all .2s;letter-spacing:.06em;text-transform:uppercase}
+.tab:hover{color:var(--white)}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-content{display:none}
+.tab-content.on{display:block}
+
+/* NOTIF */
+.notif{position:fixed;bottom:24px;right:24px;background:var(--dark);border:1px solid var(--border);padding:14px 20px;font-size:13px;z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;border-radius:2px}
+.notif.show{transform:translateY(0);opacity:1}
+.notif.gold{border-color:rgba(201,168,76,0.4);color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">✦ ReplyGenius</div>
+    <div class="login-sub">Accès administrateur</div>
+    <input type="password" class="login-input" id="adminPwd" placeholder="Mot de passe admin" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Accéder au panel</button>
+    <div class="login-err" id="loginErr">Mot de passe incorrect</div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="s-logo"><div class="s-logo-star">✦</div>Admin</div>
+  <div class="s-section">Tableau de bord</div>
+  <a class="s-item on" onclick="showTab('dashboard',this)">📊 Vue générale</a>
+  <a class="s-item" onclick="showTab('clients',this)">👥 Clients <span class="s-badge" id="clientCount">8</span></a>
+  <a class="s-item" onclick="showTab('revenue',this)">💰 Revenus</a>
+  <a class="s-item" onclick="showTab('reviews',this)">⭐ Avis traités</a>
+  <div class="s-section">Paramètres</div>
+  <a class="s-item" onclick="showTab('settings',this)">⚙️ Configuration</a>
+  <a class="s-item" href="index.html" style="margin-top:auto;border-top:1px solid var(--border2);padding-top:16px">← Site public</a>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Tableau de bord</div>
+    </div>
+    <div class="topbar-r">
+      <button class="tbtn" onclick="refreshData()">↻ Actualiser</button>
+      <button class="tbtn gold" onclick="exportCSV()">↓ Exporter CSV</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD TAB -->
+    <div class="tab-content on" id="tab-dashboard">
+      <div class="metrics">
+        <div class="mc gold-border">
+          <div class="mc-label">Clients actifs</div>
+          <div class="mc-val" id="m-clients">8</div>
+          <div class="mc-delta up">↑ +2 ce mois</div>
+        </div>
+        <div class="mc">
+          <div class="mc-label">MRR (revenus mensuels)</div>
+          <div class="mc-val" id="m-mrr">392€</div>
+          <div class="mc-delta up">↑ +98€ vs mois dernier</div>
+        </div>
+        <div class="mc">
+          <div class="mc-label">Avis traités ce mois</div>
+          <div class="mc-val" id="m-reviews">247</div>
+          <div class="mc-delta">≈ 31 par client</div>
+        </div>
+        <div class="mc">
+          <div class="mc-label">Taux de rétention</div>
+          <div class="mc-val">94%</div>
+          <div class="mc-delta up">↑ Excellent</div>
+        </div>
+      </div>
+
+      <div class="rev-grid">
+        <div class="chart">
+          <div class="panel-title">Évolution des revenus</div>
+          <div class="chart-bars" id="chartBars"></div>
+        </div>
+        <div class="summary-box">
+          <div class="panel-title" style="margin-bottom:8px">Répartition des plans</div>
+          <div class="sum-row"><div class="sum-label">Starter (19€)</div><div class="sum-val">3</div></div>
+          <div class="sum-row"><div class="sum-label">Pro (49€)</div><div class="sum-val">4</div></div>
+          <div class="sum-row"><div class="sum-label">Agency (149€)</div><div class="sum-val">1</div></div>
+          <div class="sum-row"><div class="sum-label">Total MRR</div><div class="sum-val" style="color:var(--gold2)">392€</div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><span class="panel-title">Derniers clients inscrits</span></div>
+        <table class="table">
+          <thead><tr><th>Commerce</th><th>Email</th><th>Plan</th><th>Statut</th><th>Avis/mois</th><th>Inscrit le</th></tr></thead>
+          <tbody id="recentClients"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CLIENTS TAB -->
+    <div class="tab-content" id="tab-clients">
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">Tous les clients</span>
+          <button class="tbtn gold" onclick="notif('Fonctionnalité bientôt disponible','gold')">+ Ajouter manuellement</button>
+        </div>
+        <table class="table">
+          <thead><tr><th>Commerce</th><th>Email</th><th>Plan</th><th>Statut</th><th>Avis traités</th><th>Note Google</th><th>Actions</th></tr></thead>
+          <tbody id="allClients"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REVENUE TAB -->
+    <div class="tab-content" id="tab-revenue">
+      <div class="metrics">
+        <div class="mc gold-border"><div class="mc-label">MRR actuel</div><div class="mc-val">392€</div><div class="mc-delta up">↑ +33% ce trimestre</div></div>
+        <div class="mc"><div class="mc-label">ARR projeté</div><div class="mc-val">4 704€</div><div class="mc-delta">Sur 12 mois</div></div>
+        <div class="mc"><div class="mc-label">Revenu moyen/client</div><div class="mc-val">49€</div><div class="mc-delta">LTV estimé: 588€</div></div>
+        <div class="mc"><div class="mc-label">Churn rate</div><div class="mc-val">6%</div><div class="mc-delta up">↓ En baisse</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span class="panel-title">Historique des paiements</span></div>
+        <table class="table">
+          <thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Montant</th><th>Statut</th></tr></thead>
+          <tbody id="payments"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REVIEWS TAB -->
+    <div class="tab-content" id="tab-reviews">
+      <div class="metrics">
+        <div class="mc gold-border"><div class="mc-label">Total avis traités</div><div class="mc-val">1 847</div><div class="mc-delta">Depuis le lancement</div></div>
+        <div class="mc"><div class="mc-label">Ce mois</div><div class="mc-val">247</div><div class="mc-delta up">↑ +18%</div></div>
+        <div class="mc"><div class="mc-label">Taux de réponse moyen</div><div class="mc-val">100%</div><div class="mc-delta up">✓ Parfait</div></div>
+        <div class="mc"><div class="mc-label">Note moyenne clients</div><div class="mc-val">4.5★</div><div class="mc-delta up">↑ +0.3 ce mois</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span class="panel-title">Derniers avis traités</span></div>
+        <table class="table">
+          <thead><tr><th>Commerce</th><th>Auteur</th><th>Note</th><th>Extrait</th><th>Statut</th><th>Date</th></tr></thead>
+          <tbody id="reviewsList"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div class="tab-content" id="tab-settings">
+      <div class="panel" style="padding:28px">
+        <div class="panel-title" style="margin-bottom:20px">Configuration système</div>
+        <div style="display:flex;flex-direction:column;gap:16px;max-width:480px">
+          <div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px">Clé API Anthropic</label><input type="password" style="width:100%;padding:12px 16px;border:1px solid var(--border2);background:var(--dark2);color:var(--white);font-family:'Jost',sans-serif;font-size:13px;outline:none;border-radius:2px" placeholder="sk-ant-..." value="sk-ant-api03-••••••••••••"></div>
+          <div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px">Supabase URL</label><input type="text" style="width:100%;padding:12px 16px;border:1px solid var(--border2);background:var(--dark2);color:var(--white);font-family:'Jost',sans-serif;font-size:13px;outline:none;border-radius:2px" placeholder="https://xxx.supabase.co"></div>
+          <div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px">Stripe Secret Key</label><input type="password" style="width:100%;padding:12px 16px;border:1px solid var(--border2);background:var(--dark2);color:var(--white);font-family:'Jost',sans-serif;font-size:13px;outline:none;border-radius:2px" placeholder="sk_live_..."></div>
+          <div><label style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:8px">Mot de passe admin</label><input type="password" id="newPwd" style="width:100%;padding:12px 16px;border:1px solid var(--border2);background:var(--dark2);color:var(--white);font-family:'Jost',sans-serif;font-size:13px;outline:none;border-radius:2px" placeholder="Nouveau mot de passe"></div>
+          <button class="tbtn gold" style="width:fit-content" onclick="notif('Paramètres sauvegardés ✦','gold')">Sauvegarder</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NOTIF -->
+<div class="notif" id="notifEl"></div>
+
+<script>
+// ===== FAKE DATA =====
+const clients = [
+  {id:1,name:'Boulangerie du Marché',email:'contact@boulangerie-marche.fr',plan:'pro',status:'active',reviews:42,rating:4.7,joined:'02/05/2025',city:'Bordeaux'},
+  {id:2,name:'Restaurant Le Zinc',email:'rezervation@lezinc.fr',plan:'pro',status:'active',reviews:38,rating:4.5,joined:'28/04/2025',city:'Lyon'},
+  {id:3,name:'Coiffure Élégance',email:'hello@elegance-coiffure.fr',plan:'starter',status:'trial',reviews:12,rating:4.3,joined:'10/05/2025',city:'Paris'},
+  {id:4,name:'Groupe Saveurs',email:'karim@groupesaveurs.com',plan:'agency',status:'active',reviews:89,rating:4.6,joined:'15/03/2025',city:'Paris'},
+  {id:5,name:'Hôtel des Alpes',email:'info@hoteldesalpes.fr',plan:'pro',status:'active',reviews:31,rating:4.8,joined:'01/04/2025',city:'Grenoble'},
+  {id:6,name:'Pharmacie Centrale',email:'pharma@centrale-lyon.fr',plan:'starter',status:'active',reviews:8,rating:4.2,joined:'05/05/2025',city:'Lyon'},
+  {id:7,name:'Garage Dubois',email:'garage.dubois@gmail.com',plan:'starter',status:'trial',reviews:5,rating:4.0,joined:'12/05/2025',city:'Nantes'},
+  {id:8,name:'L\'Atelier Beauté',email:'contact@atelierbeaute.fr',plan:'pro',status:'active',reviews:22,rating:4.9,joined:'20/04/2025',city:'Marseille'},
+];
+
+const payments = [
+  {date:'01/05/2025',client:'Groupe Saveurs',plan:'Agency',amount:'149€',status:'✓ Payé'},
+  {date:'01/05/2025',client:'Restaurant Le Zinc',plan:'Pro',amount:'49€',status:'✓ Payé'},
+  {date:'01/05/2025',client:'Boulangerie du Marché',plan:'Pro',amount:'49€',status:'✓ Payé'},
+  {date:'01/05/2025',client:'Hôtel des Alpes',plan:'Pro',amount:'49€',status:'✓ Payé'},
+  {date:'01/05/2025',client:'L\'Atelier Beauté',plan:'Pro',amount:'49€',status:'✓ Payé'},
+  {date:'01/05/2025',client:'Pharmacie Centrale',plan:'Starter',amount:'19€',status:'✓ Payé'},
+  {date:'28/04/2025',client:'Coiffure Élégance',plan:'Starter',amount:'0€',status:'⏳ Essai'},
+  {date:'12/04/2025',client:'Garage Dubois',plan:'Starter',amount:'0€',status:'⏳ Essai'},
+];
+
+const reviews = [
+  {commerce:'Boulangerie du Marché',author:'Marie R.',rating:'★★★★★',text:'"Croissants délicieux !"',status:'✓ Répondu',date:'Il y a 5 min'},
+  {commerce:'Restaurant Le Zinc',author:'Thomas C.',rating:'★★☆☆☆',text:'"Service lent ce soir"',status:'⚠️ Urgent',date:'Il y a 12 min'},
+  {commerce:'Hôtel des Alpes',author:'Sophie B.',rating:'★★★★★',text:'"Séjour parfait !"',status:'✓ Répondu',date:'Il y a 28 min'},
+  {commerce:'Groupe Saveurs',author:'Jean M.',rating:'★★★★☆',text:'"Très bon rapport qualité"',status:'✓ Répondu',date:'Il y a 1h'},
+  {commerce:'L\'Atelier Beauté',author:'Clara D.',rating:'★★★★★',text:'"Meilleur salon de Paris"',status:'✓ Répondu',date:'Il y a 2h'},
+];
+
+const months = ['Nov','Déc','Jan','Fév','Mar','Avr','Mai'];
+const revenues = [0,95,144,193,242,294,392];
+
+// ===== LOGIN =====
+const ADMIN_PWD = 'replygenius2025';
+function doLogin(){
+  const pwd=document.getElementById('adminPwd').value;
+  if(pwd===ADMIN_PWD){
+    document.getElementById('loginScreen').style.display='none';
+    initDashboard();
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+}
+document.getElementById('adminPwd').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+// ===== INIT =====
+function initDashboard(){
+  renderRecentClients();
+  renderAllClients();
+  renderPayments();
+  renderReviews();
+  renderChart();
+}
+
+function planTag(plan){
+  const cls={starter:'plan-starter',pro:'plan-pro',agency:'plan-agency'}[plan]||'plan-starter';
+  return `<span class="plan-tag ${cls}">${plan}</span>`;
+}
+function statusDot(status){
+  const cls={active:'status-active',trial:'status-trial',inactive:'status-inactive'}[status]||'status-inactive';
+  const lbl={active:'Actif',trial:'Essai',inactive:'Inactif'}[status]||status;
+  return `<span class="status-dot ${cls}"></span>${lbl}`;
+}
+
+function renderRecentClients(){
+  const tbody=document.getElementById('recentClients');
+  tbody.innerHTML=clients.slice(0,5).map(c=>`
+    <tr>
+      <td><strong style="color:var(--white)">${c.name}</strong><br><small style="color:var(--muted)">${c.city}</small></td>
+      <td>${c.email}</td>
+      <td>${planTag(c.plan)}</td>
+      <td>${statusDot(c.status)}</td>
+      <td>${c.reviews}</td>
+      <td>${c.joined}</td>
+    </tr>`).join('');
+}
+
+function renderAllClients(){
+  const tbody=document.getElementById('allClients');
+  tbody.innerHTML=clients.map(c=>`
+    <tr>
+      <td><strong style="color:var(--white)">${c.name}</strong></td>
+      <td>${c.email}</td>
+      <td>${planTag(c.plan)}</td>
+      <td>${statusDot(c.status)}</td>
+      <td>${c.reviews}</td>
+      <td>${c.rating}★</td>
+      <td><button class="action-btn" onclick="notif('Email envoyé à ${c.name}','gold')">Contacter</button></td>
+    </tr>`).join('');
+}
+
+function renderPayments(){
+  const tbody=document.getElementById('payments');
+  tbody.innerHTML=payments.map(p=>`
+    <tr>
+      <td>${p.date}</td>
+      <td>${p.client}</td>
+      <td>${planTag(p.plan.toLowerCase())}</td>
+      <td style="color:var(--gold);font-weight:600">${p.amount}</td>
+      <td style="color:${p.status.includes('✓')?'#16A669':'var(--gold)'}">${p.status}</td>
+    </tr>`).join('');
+}
+
+function renderReviews(){
+  const tbody=document.getElementById('reviewsList');
+  tbody.innerHTML=reviews.map(r=>`
+    <tr>
+      <td><strong style="color:var(--white)">${r.commerce}</strong></td>
+      <td>${r.author}</td>
+      <td style="color:var(--gold)">${r.rating}</td>
+      <td style="color:var(--muted)">${r.text}</td>
+      <td style="color:${r.status.includes('✓')?'#16A669':'var(--red)'}">${r.status}</td>
+      <td>${r.date}</td>
+    </tr>`).join('');
+}
+
+function renderChart(){
+  const container=document.getElementById('chartBars');
+  const max=Math.max(...revenues);
+  container.innerHTML=months.map((m,i)=>`
+    <div class="bar-wrap">
+      <div class="bar" data-val="${revenues[i]}€" style="height:${revenues[i]/max*100}%;background:${i===months.length-1?'var(--gold)':'rgba(201,168,76,0.2)'}"></div>
+      <div class="bar-month">${m}</div>
+    </div>`).join('');
+}
+
+// ===== TABS =====
+function showTab(name,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.s-item').forEach(i=>i.classList.remove('on'));
+  document.getElementById('tab-'+name)?.classList.add('on');
+  el?.classList.add('on');
+}
+
+// ===== UTILS =====
+function notif(msg,type=''){
+  const el=document.getElementById('notifEl');
+  el.textContent=msg;el.className=`notif ${type} show`;
+  setTimeout(()=>el.classList.remove('show'),3000);
+}
+function refreshData(){notif('Données actualisées ✦','gold')}
+function exportCSV(){
+  const rows=['Commerce,Email,Plan,Statut,Avis',...clients.map(c=>`${c.name},${c.email},${c.plan},${c.status},${c.reviews}`)];
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(rows.join('\n'));
+  a.download='replygenius-clients.csv';a.click();
+  notif('Export CSV téléchargé ✦','gold');
+}
+</script>
+</body>
+</html>

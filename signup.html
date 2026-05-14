@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReplyGenius — Créer mon compte</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#080808;--dark:#0F0F0F;--dark2:#181818;--gold:#C9A84C;--gold2:#E8C97A;--white:#FAF9F6;--muted:#888;--border:rgba(201,168,76,0.15);--border2:rgba(255,255,255,0.07);--red:#DC2626}
+body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+
+.left{background:var(--dark);border-right:1px solid var(--border);padding:52px;display:flex;flex-direction:column;justify-content:space-between;min-height:100vh;position:relative;overflow:hidden}
+.left::before{content:'';position:absolute;top:-60px;left:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%);pointer-events:none}
+.logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:12px;text-decoration:none;letter-spacing:.05em}
+.logo-star{width:28px;height:28px;border:1px solid var(--border);display:grid;place-items:center;font-size:13px}
+.lc{flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 0}
+.lt{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;color:var(--white);line-height:1.08;margin-bottom:18px;letter-spacing:-.01em}
+.lt em{font-style:italic;color:var(--gold)}
+.ls{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:40px;font-weight:300}
+.fl{display:flex;flex-direction:column;gap:14px}
+.fi{display:flex;align-items:center;gap:14px;font-size:13px;color:rgba(255,255,255,.6);font-weight:300;letter-spacing:.03em}
+.fck{width:20px;height:20px;border:1px solid var(--border);display:grid;place-items:center;font-size:9px;color:var(--gold);flex-shrink:0}
+.lb{font-size:12px;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase}
+.lb strong{color:rgba(255,255,255,.5)}
+
+.right{padding:52px;display:flex;flex-direction:column;justify-content:center;width:100%;max-width:480px;margin:0 auto}
+.rt{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--white);margin-bottom:6px;letter-spacing:-.01em}
+.rs{font-size:13px;color:var(--muted);margin-bottom:32px;font-weight:300}
+.rs a{color:var(--gold);text-decoration:none}
+
+.sbar{display:flex;gap:6px;margin-bottom:32px}
+.sb{height:1px;flex:1;background:var(--border2);transition:background .4s}
+.sb.on{background:var(--gold)}
+.sb.done{background:rgba(201,168,76,0.3)}
+
+.field{margin-bottom:18px}
+.fl-label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;display:block}
+.fl-input{width:100%;padding:13px 16px;border:1px solid var(--border2);background:var(--dark2);color:var(--white);font-family:'Jost',sans-serif;font-size:14px;outline:none;transition:border-color .3s;border-radius:2px;font-weight:300}
+.fl-input:focus{border-color:rgba(201,168,76,0.4)}
+.fl-input.err{border-color:var(--red)}
+.fl-sel{width:100%;padding:13px 16px;border:1px solid var(--border2);background:var(--dark2);color:var(--white);font-family:'Jost',sans-serif;font-size:14px;outline:none;cursor:pointer;transition:border-color .3s;border-radius:2px}
+.fl-sel:focus{border-color:rgba(201,168,76,0.4)}
+.emsg{font-size:11px;color:var(--red);margin-top:5px;display:none;letter-spacing:.04em}
+.emsg.show{display:block}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.plans{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.pc{border:1px solid var(--border2);padding:14px 16px;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:14px;border-radius:2px}
+.pc:hover{border-color:rgba(201,168,76,0.3)}
+.pc.sel{border-color:rgba(201,168,76,0.5);background:rgba(201,168,76,0.05)}
+.pr{width:16px;height:16px;border:1px solid var(--border2);border-radius:50%;display:grid;place-items:center;flex-shrink:0;transition:all .3s}
+.pc.sel .pr{border-color:var(--gold);background:var(--gold)}
+.pr::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--black);opacity:0;transition:opacity .2s}
+.pc.sel .pr::after{opacity:1}
+.pi{flex:1}
+.pn{font-size:13px;font-weight:500;color:var(--white);letter-spacing:.04em}
+.pd{font-size:11px;color:var(--muted);margin-top:2px;font-weight:300}
+.pp{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold)}
+.pp span{font-size:12px;font-weight:300;font-family:'Jost',sans-serif;color:var(--muted)}
+.pbdg{font-size:9px;font-weight:600;border:1px solid var(--gold);color:var(--gold);padding:2px 7px;letter-spacing:.08em;text-transform:uppercase;margin-left:6px}
+
+.trial{border:1px solid var(--border);padding:12px 16px;margin-bottom:18px;font-size:12px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;text-align:center;font-weight:500}
+
+.sbtn{width:100%;padding:15px;background:var(--gold);color:var(--black);border:none;font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;border-radius:2px}
+.sbtn:hover{background:var(--gold2)}
+.sbtn:disabled{opacity:.5;cursor:not-allowed}
+
+.ok{text-align:center;display:none}
+.ok-icon{font-size:40px;margin-bottom:20px;color:var(--gold)}
+.ok-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--white);margin-bottom:12px;letter-spacing:-.01em}
+.ok-sub{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:28px;font-weight:300}
+.go{display:inline-block;background:var(--gold);color:var(--black);padding:14px 32px;font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:background .3s;border-radius:2px}
+.go:hover{background:var(--gold2)}
+
+@media(max-width:768px){body{grid-template-columns:1fr}.left{display:none}.right{padding:32px 20px;max-width:100%}}
+</style>
+</head>
+<body>
+<div class="left">
+  <a href="index.html" class="logo"><div class="logo-star">✦</div>ReplyGenius</a>
+  <div class="lc">
+    <div class="lt">Vos avis Google,<br>gérés par <em>l'IA.</em></div>
+    <p class="ls">Rejoignez les commerçants qui répondent automatiquement à tous leurs avis Google — sans lever le petit doigt.</p>
+    <div class="fl">
+      <div class="fi"><div class="fck">✦</div>Réponse automatique en 10 secondes</div>
+      <div class="fi"><div class="fck">✦</div>Personnalisé à votre ton et votre commerce</div>
+      <div class="fi"><div class="fck">✦</div>Alerte immédiate pour les avis négatifs</div>
+      <div class="fi"><div class="fck">✦</div>Dashboard de suivi en temps réel</div>
+      <div class="fi"><div class="fck">✦</div>Sans engagement — résiliez quand vous voulez</div>
+    </div>
+  </div>
+  <div class="lb">Déjà <strong>100+ commerçants</strong> nous font confiance 🇫🇷</div>
+</div>
+
+<div class="right">
+  <div id="formArea">
+    <div class="rt" id="stitle">Créer mon compte</div>
+    <div class="rs" id="ssub">Déjà inscrit ? <a href="dashboard.html">Accéder au dashboard →</a></div>
+    <div class="sbar"><div class="sb on" id="b1"></div><div class="sb" id="b2"></div><div class="sb" id="b3"></div></div>
+
+    <div id="s1">
+      <div class="field"><label class="fl-label">Adresse email</label><input type="email" class="fl-input" id="email" placeholder="vous@votrecommerce.fr"><div class="emsg" id="e-email">Email invalide</div></div>
+      <div class="row2">
+        <div class="field"><label class="fl-label">Mot de passe</label><input type="password" class="fl-input" id="pwd" placeholder="••••••••"><div class="emsg" id="e-pwd">8 caractères minimum</div></div>
+        <div class="field"><label class="fl-label">Confirmation</label><input type="password" class="fl-input" id="pwd2" placeholder="••••••••"><div class="emsg" id="e-pwd2">Ne correspond pas</div></div>
+      </div>
+      <button class="sbtn" onclick="go2()">Continuer →</button>
+    </div>
+
+    <div id="s2" style="display:none">
+      <div class="field"><label class="fl-label">Nom de votre établissement</label><input type="text" class="fl-input" id="biz" placeholder="Ex: Boulangerie du Marché"><div class="emsg" id="e-biz">Champ obligatoire</div></div>
+      <div class="field"><label class="fl-label">Type d'établissement</label>
+        <select class="fl-sel" id="btype">
+          <option value="">Choisissez...</option>
+          <option value="restaurant">Restaurant / Café / Bistrot</option>
+          <option value="boulangerie">Boulangerie / Pâtisserie</option>
+          <option value="coiffeur">Coiffeur / Institut beauté</option>
+          <option value="hotel">Hôtel / Hébergement</option>
+          <option value="pharmacie">Pharmacie / Santé</option>
+          <option value="boutique">Boutique / Commerce</option>
+          <option value="garage">Garage / Auto</option>
+          <option value="autre">Autre</option>
+        </select>
+        <div class="emsg" id="e-type">Champ obligatoire</div>
+      </div>
+      <div class="field"><label class="fl-label">Ville</label><input type="text" class="fl-input" id="city" placeholder="Paris, Lyon, Marseille..."></div>
+      <button class="sbtn" onclick="go3()">Continuer →</button>
+    </div>
+
+    <div id="s3" style="display:none">
+      <div class="trial">✦ 14 jours gratuits — aucune facturation immédiate</div>
+      <div class="plans">
+        <div class="pc" onclick="sp('starter',this)"><div class="pr"></div><div class="pi"><div class="pn">Starter</div><div class="pd">1 établissement · 50 avis/mois</div></div><div class="pp">19€ <span>/mois</span></div></div>
+        <div class="pc sel" onclick="sp('pro',this)"><div class="pr"></div><div class="pi"><div class="pn">Pro <span class="pbdg">Populaire</span></div><div class="pd">3 établissements · Illimité · Auto</div></div><div class="pp">49€ <span>/mois</span></div></div>
+        <div class="pc" onclick="sp('agency',this)"><div class="pr"></div><div class="pi"><div class="pn">Agency</div><div class="pd">20 établissements · Marque blanche</div></div><div class="pp">149€ <span>/mois</span></div></div>
+      </div>
+      <button class="sbtn" id="paybtn" onclick="create()">Démarrer mon essai gratuit</button>
+      <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:12px;letter-spacing:.06em;text-transform:uppercase">✦ Paiement sécurisé · Sans engagement</div>
+    </div>
+  </div>
+
+  <div class="ok" id="okArea">
+    <div class="ok-icon">✦</div>
+    <div class="ok-title">Bienvenue sur ReplyGenius</div>
+    <p class="ok-sub">Votre compte est créé. Connectez votre fiche Google My Business dans le dashboard pour que l'IA commence à répondre à vos avis automatiquement.</p>
+    <a href="dashboard.html" class="go">Accéder à mon dashboard</a>
+    <div style="font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:.06em">Un email de confirmation vous a été envoyé</div>
+  </div>
+</div>
+
+<script>
+let plan='pro';
+function err(id,show){document.getElementById(id).classList[show?'add':'remove']('show')}
+function go2(){
+  const e=document.getElementById('email').value.trim();
+  const p=document.getElementById('pwd').value;
+  const p2=document.getElementById('pwd2').value;
+  let ok=true;
+  if(!e||!e.includes('@')){err('e-email',true);ok=false}else err('e-email',false);
+  if(p.length<8){err('e-pwd',true);ok=false}else err('e-pwd',false);
+  if(p!==p2){err('e-pwd2',true);ok=false}else err('e-pwd2',false);
+  if(!ok)return;
+  document.getElementById('s1').style.display='none';
+  document.getElementById('s2').style.display='block';
+  document.getElementById('stitle').textContent='Votre établissement';
+  document.getElementById('ssub').textContent='Dites-nous en plus sur votre commerce';
+  document.getElementById('b1').classList.add('done');
+  document.getElementById('b2').classList.add('on');
+}
+function go3(){
+  const b=document.getElementById('biz').value.trim();
+  const t=document.getElementById('btype').value;
+  let ok=true;
+  if(!b){err('e-biz',true);ok=false}else err('e-biz',false);
+  if(!t){err('e-type',true);ok=false}else err('e-type',false);
+  if(!ok)return;
+  document.getElementById('s2').style.display='none';
+  document.getElementById('s3').style.display='block';
+  document.getElementById('stitle').textContent='Choisir mon plan';
+  document.getElementById('ssub').textContent='14 jours gratuits, sans carte requise maintenant';
+  document.getElementById('b2').classList.add('done');
+  document.getElementById('b3').classList.add('on');
+}
+function sp(p,el){plan=p;document.querySelectorAll('.pc').forEach(c=>c.classList.remove('sel'));el.classList.add('sel')}
+async function create(){
+  const btn=document.getElementById('paybtn');
+  btn.disabled=true;btn.textContent='Création en cours...';
+  localStorage.setItem('rg_email',document.getElementById('email').value.trim());
+  localStorage.setItem('rg_business',document.getElementById('biz').value.trim());
+  localStorage.setItem('rg_type',document.getElementById('btype').value);
+  localStorage.setItem('rg_plan',plan);
+  localStorage.setItem('rg_city',document.getElementById('city').value.trim());
+  await new Promise(r=>setTimeout(r,2000));
+  document.getElementById('formArea').style.display='none';
+  document.getElementById('okArea').style.display='block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReplyGenius — L'IA qui répond à vos avis Google</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;
+  --dark:#0F0F0F;
+  --dark2:#181818;
+  --gold:#C9A84C;
+  --gold2:#E8C97A;
+  --gold3:#F5E4B0;
+  --white:#FAF9F6;
+  --muted:#888;
+  --border:rgba(201,168,76,0.15);
+  --border2:rgba(255,255,255,0.07);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;padding:0 6vw;background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:12px;text-decoration:none;letter-spacing:.05em}
+.nav-logo-star{width:28px;height:28px;border:1px solid var(--gold);border-radius:6px;display:grid;place-items:center;font-size:13px}
+.nav-links{margin-left:auto;display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:400;letter-spacing:.08em;text-transform:uppercase;transition:color .3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{border:1px solid var(--gold)!important;color:var(--gold)!important;padding:9px 22px;border-radius:2px;font-size:12px!important;letter-spacing:.1em!important;text-transform:uppercase!important;transition:all .3s!important}
+.nav-cta:hover{background:var(--gold)!important;color:var(--black)!important}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:0 6vw;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(201,168,76,0.06) 0%,transparent 70%)}
+.hero-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0.015) 0px,rgba(255,255,255,0.015) 1px,transparent 1px,transparent 80px);pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 420px;gap:80px;align-items:center;padding-top:72px}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.ey-line{width:40px;height:1px;background:var(--gold)}
+.ey-txt{font-size:11px;font-weight:500;color:var(--gold);text-transform:uppercase;letter-spacing:.18em}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5.5vw,72px);font-weight:600;line-height:1.04;letter-spacing:-.01em;color:var(--white);margin-bottom:24px}
+h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:16px;color:var(--muted);line-height:1.8;max-width:480px;margin-bottom:40px;font-weight:300}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+.btn-gold{background:var(--gold);color:var(--black);padding:14px 32px;font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;text-decoration:none;transition:all .3s;display:inline-block}
+.btn-gold:hover{background:var(--gold2)}
+.btn-outline{background:transparent;color:var(--white);padding:14px 32px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2);border-radius:2px;cursor:pointer;text-decoration:none;transition:all .3s;display:inline-block}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.hero-proof{display:flex;gap:24px;flex-wrap:wrap}
+.hp{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;letter-spacing:.04em}
+.hp-star{color:var(--gold);font-size:10px}
+
+/* HERO CARD */
+.hero-card{background:var(--dark2);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 0 1px rgba(201,168,76,0.08)}
+.hc-top{background:var(--dark);padding:14px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border2)}
+.hc-dot{width:8px;height:8px;border-radius:50%}
+.hc-body{padding:20px}
+.hc-label{font-size:9px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px}
+.hc-review{border:1px solid var(--border2);border-radius:3px;padding:14px}
+.hc-reviewer{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.hc-av{width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.15);border:1px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--gold);flex-shrink:0}
+.hc-name{font-size:13px;font-weight:500;color:var(--white)}
+.hc-stars{color:var(--gold);font-size:11px;letter-spacing:1px}
+.hc-ago{font-size:11px;color:var(--muted)}
+.hc-text{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6}
+.hc-reply{background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:3px;padding:12px 14px;margin-top:10px}
+.hc-reply-tag{font-size:9px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+.hc-reply-txt{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6}
+.cursor{display:inline-block;width:1.5px;height:12px;background:var(--gold);animation:cur .8s infinite;vertical-align:middle;margin-left:1px}
+@keyframes cur{0%,100%{opacity:1}50%{opacity:0}}
+.hc-btns{display:flex;gap:8px;margin-top:12px}
+.hc-pub{flex:1;background:var(--gold);color:var(--black);text-align:center;padding:9px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.hc-edit{border:1px solid var(--border2);text-align:center;padding:9px 12px;font-size:11px;cursor:pointer;color:var(--muted);border-radius:2px}
+.speed-tag{position:absolute;top:-12px;right:20px;background:var(--gold);color:var(--black);font-size:10px;font-weight:700;padding:5px 14px;letter-spacing:.06em;text-transform:uppercase}
+.hc-wrap{position:relative}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:20px;padding:60px 6vw}
+.div-line{flex:1;height:1px;background:var(--border)}
+.div-txt{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
+
+/* STATS */
+.stats{padding:0 6vw 80px;max-width:1100px;margin:0 auto}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.sc{background:var(--dark);padding:40px;border:1px solid var(--border2)}
+.sn{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:600;line-height:1;color:var(--gold);margin-bottom:10px;letter-spacing:-.01em}
+.sl{font-size:14px;color:var(--white);font-weight:500;letter-spacing:.04em;margin-bottom:4px}
+.ss{font-size:12px;color:var(--muted)}
+
+/* SECTION */
+.section{padding:80px 6vw;max-width:1100px;margin:0 auto}
+.section-head{margin-bottom:56px}
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:600;line-height:1.1;color:var(--white);letter-spacing:-.01em}
+h2 em{font-style:italic;color:var(--gold)}
+.sec-sub{font-size:15px;color:var(--muted);margin-top:14px;max-width:480px;line-height:1.75;font-weight:300}
+
+/* FEATURES */
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.feat{background:var(--dark);padding:36px 32px;border:1px solid var(--border2);transition:background .3s}
+.feat:hover{background:var(--dark2)}
+.feat-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;color:rgba(201,168,76,0.25);margin-bottom:16px;line-height:1}
+.feat-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:10px;letter-spacing:.03em}
+.feat-desc{font-size:13px;color:var(--muted);line-height:1.75;font-weight:300}
+
+/* HOW */
+.how-bg{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 6vw}
+.how-inner{max-width:1100px;margin:0 auto}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:56px}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--border2);cursor:pointer;transition:all .2s}
+.step:last-child{border:none}
+.step.on{padding-left:8px}
+.step-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:rgba(201,168,76,0.2);flex-shrink:0;width:36px;transition:color .3s;line-height:1.2}
+.step.on .step-n{color:var(--gold)}
+.step-title{font-size:14px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.04em;margin-bottom:5px;transition:color .3s}
+.step.on .step-title{color:var(--white)}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300}
+.how-vis{border:1px solid var(--border);background:rgba(201,168,76,0.03);padding:48px;text-align:center;min-height:320px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.hv-icon{font-size:52px;margin-bottom:20px}
+.hv-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--gold);margin-bottom:12px}
+.hv-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:240px;font-weight:300}
+
+/* TESTIMONIALS */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.tc{background:var(--dark);padding:36px 32px;border:1px solid var(--border2)}
+.tc.featured{background:linear-gradient(135deg,rgba(201,168,76,0.12) 0%,var(--dark) 100%)}
+.tc-stars{color:var(--gold);font-size:12px;letter-spacing:2px;margin-bottom:18px}
+.tc-text{font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;color:rgba(255,255,255,.8);margin-bottom:24px;font-style:italic}
+.tc-author{display:flex;align-items:center;gap:12px}
+.tc-av{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--gold);flex-shrink:0}
+.tc-name{font-size:13px;font-weight:600;color:var(--white);letter-spacing:.03em}
+.tc-biz{font-size:12px;color:var(--muted)}
+
+/* PRICING */
+.pricing-bg{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 6vw}
+.pricing-inner{max-width:1100px;margin:0 auto}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:56px}
+.plan{background:var(--dark2);padding:40px 32px;border:1px solid var(--border2);position:relative}
+.plan.pop{background:linear-gradient(160deg,rgba(201,168,76,0.1) 0%,var(--dark2) 100%);border-color:rgba(201,168,76,0.3)}
+.plan-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);font-size:10px;font-weight:700;padding:4px 16px;letter-spacing:.08em;text-transform:uppercase}
+.plan-name{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px}
+.plan-price{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:600;color:var(--white);line-height:1;margin-bottom:6px}
+.plan-price sup{font-size:22px;vertical-align:super}
+.plan-price sub{font-size:15px;font-weight:300;font-family:'Jost',sans-serif;color:var(--muted)}
+.plan-desc{font-size:13px;color:var(--muted);margin-bottom:28px;font-weight:300}
+.plan-div{height:1px;background:var(--border2);margin:20px 0}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.plan-feats li{font-size:13px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:10px;font-weight:300}
+.plan-feats li::before{content:'—';color:var(--gold);flex-shrink:0}
+.plan-feats li.off{color:rgba(255,255,255,.2)}
+.plan-feats li.off::before{color:rgba(255,255,255,.1)}
+.plan-btn{display:block;text-align:center;padding:13px;font-family:'Jost',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(255,255,255,.15);color:var(--white);transition:all .3s;border-radius:2px}
+.plan-btn:hover{border-color:var(--gold);color:var(--gold)}
+.plan.pop .plan-btn{background:var(--gold);border-color:var(--gold);color:var(--black)}
+.plan.pop .plan-btn:hover{background:var(--gold2)}
+
+/* FAQ */
+.faq-inner{max-width:700px}
+.fi{border-bottom:1px solid var(--border2)}
+.fq{padding:22px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;font-weight:500;color:rgba(255,255,255,.7);gap:16px;letter-spacing:.03em;transition:color .2s}
+.fq:hover{color:var(--gold)}
+.ftog{width:24px;height:24px;border:1px solid var(--border);display:grid;place-items:center;font-size:16px;color:var(--muted);transition:all .3s;flex-shrink:0}
+.fi.open .ftog{background:var(--gold);border-color:var(--gold);color:var(--black);transform:rotate(45deg)}
+.fa{font-size:14px;color:var(--muted);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;font-weight:300}
+.fi.open .fa{max-height:300px;padding-bottom:22px}
+
+/* CTA */
+.cta-section{padding:80px 6vw}
+.cta-inner{max-width:1100px;margin:0 auto}
+.cta-box{border:1px solid var(--border);padding:72px 64px;display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,transparent 60%);position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.08) 0%,transparent 70%)}
+.cta-box h2{font-size:clamp(28px,3.5vw,46px)}
+.cta-box p{font-size:15px;color:var(--muted);margin-top:12px;font-weight:300}
+.cta-r{display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+.cta-fine{font-size:11px;color:var(--muted);text-align:center;letter-spacing:.06em;text-transform:uppercase}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:36px 6vw;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);flex-wrap:wrap;gap:14px}
+.flogo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:.05em}
+.flinks{display:flex;gap:24px}
+.flinks a{color:var(--muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;font-size:11px;transition:color .2s}
+.flinks a:hover{color:var(--gold)}
+
+/* BAND */
+.band{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden}
+.band-track{display:flex;gap:60px;white-space:nowrap;animation:slide 25s linear infinite}
+.bi{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.bi-star{color:var(--gold)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-left>*{animation:fadeUp .6s both}
+.hero-left>*:nth-child(2){animation-delay:.1s}
+.hero-left>*:nth-child(3){animation-delay:.2s}
+.hero-left>*:nth-child(4){animation-delay:.3s}
+.hero-left>*:nth-child(5){animation-delay:.4s}
+.hero-card{animation:fadeUp .7s .15s both}
+
+@media(max-width:900px){
+.hero-inner,.how-grid,.cta-box{grid-template-columns:1fr}
+.hero-card{display:none}
+.feats,.tgrid,.plans,.stats-grid{grid-template-columns:1fr}
+.cta-box{padding:40px 28px}
+.cta-r{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo"><div class="nav-logo-star">✦</div>ReplyGenius</a>
+  <div class="nav-links">
+    <a href="#features">Fonctionnalités</a>
+    <a href="#pricing">Tarifs</a>
+    <a href="#faq">FAQ</a>
+    <a href="signup.html" class="nav-cta">Essai gratuit</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><div class="ey-line"></div><div class="ey-txt">Intelligence Artificielle · Google My Business</div></div>
+      <h1>Chaque avis mérite<br>une <em>réponse parfaite.</em></h1>
+      <p class="hero-sub">ReplyGenius répond automatiquement à tous vos avis Google avec l'IA — dans votre ton, avec votre personnalité. En 10 secondes.</p>
+      <div class="hero-btns">
+        <a href="signup.html" class="btn-gold">Essayer gratuitement</a>
+        <a href="#features" class="btn-outline">Découvrir</a>
+      </div>
+      <div class="hero-proof">
+        <div class="hp"><span class="hp-star">✦</span>Sans carte bancaire</div>
+        <div class="hp"><span class="hp-star">✦</span>14 jours offerts</div>
+        <div class="hp"><span class="hp-star">✦</span>Résiliation libre</div>
+      </div>
+    </div>
+    <div class="hc-wrap">
+      <div class="speed-tag">✦ Répondu en 6 secondes</div>
+      <div class="hero-card">
+        <div class="hc-top">
+          <div class="hc-dot" style="background:#FF5F57"></div>
+          <div class="hc-dot" style="background:#FFBD2E"></div>
+          <div class="hc-dot" style="background:#28C840"></div>
+        </div>
+        <div class="hc-body">
+          <div class="hc-label">✦ Nouvel avis reçu</div>
+          <div class="hc-review">
+            <div class="hc-reviewer">
+              <div class="hc-av">MR</div>
+              <div>
+                <div class="hc-name">Marie Renaud</div>
+                <div><span class="hc-stars">★★★★★</span> <span class="hc-ago">· Il y a 2 min</span></div>
+              </div>
+            </div>
+            <p class="hc-text">"Les croissants sont délicieux, comme chez ma grand-mère ! Personnel adorable. Je reviendrai chaque semaine !"</p>
+            <div class="hc-reply">
+              <div class="hc-reply-tag">✦ Réponse générée par l'IA</div>
+              <p class="hc-reply-txt" id="ht"></p>
+            </div>
+          </div>
+          <div class="hc-btns"><div class="hc-pub">Publier</div><div class="hc-edit">Modifier</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="band">
+  <div class="band-track">
+    <div class="bi"><span class="bi-star">✦</span>100+ Commerçants</div>
+    <div class="bi"><span class="bi-star">✦</span>Note +0,4 en 3 mois</div>
+    <div class="bi"><span class="bi-star">✦</span>100% des avis répondus</div>
+    <div class="bi"><span class="bi-star">✦</span>3h économisées/mois</div>
+    <div class="bi"><span class="bi-star">✦</span>IA personnalisée</div>
+    <div class="bi"><span class="bi-star">✦</span>API Google officielle</div>
+    <div class="bi"><span class="bi-star">✦</span>100+ Commerçants</div>
+    <div class="bi"><span class="bi-star">✦</span>Note +0,4 en 3 mois</div>
+    <div class="bi"><span class="bi-star">✦</span>100% des avis répondus</div>
+    <div class="bi"><span class="bi-star">✦</span>3h économisées/mois</div>
+    <div class="bi"><span class="bi-star">✦</span>IA personnalisée</div>
+    <div class="bi"><span class="bi-star">✦</span>API Google officielle</div>
+  </div>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:64px 6vw 0" class="stats">
+  <div class="stats-grid">
+    <div class="sc"><div class="sn">+0.4</div><div class="sl">Points de note gagnés</div><div class="ss">En moyenne sur 3 mois</div></div>
+    <div class="sc"><div class="sn">100%</div><div class="sl">Des avis ont une réponse</div><div class="ss">Contre 23% sans outil</div></div>
+    <div class="sc"><div class="sn">3h</div><div class="sl">Économisées par mois</div><div class="ss">En moyenne par établissement</div></div>
+  </div>
+</div>
+
+<div class="divider"><div class="div-line"></div><div class="div-txt">Fonctionnalités</div><div class="div-line"></div></div>
+
+<section class="section" id="features">
+  <div class="section-head">
+    <h2>Tout ce qu'il vous faut,<br><em>rien de superflu.</em></h2>
+    <p class="sec-sub">Une solution pensée pour les commerçants qui veulent une e-réputation irréprochable sans y passer leur temps.</p>
+  </div>
+  <div class="feats">
+    <div class="feat"><div class="feat-num">01</div><div class="feat-title">Réponse en 6 secondes</div><p class="feat-desc">Dès qu'un avis arrive, l'IA génère une réponse sur mesure. Validez en un clic ou laissez publier automatiquement.</p></div>
+    <div class="feat"><div class="feat-num">02</div><div class="feat-title">Votre ton, votre style</div><p class="feat-desc">Chaleureux, professionnel, bref... L'IA s'adapte à votre personnalité. Chaque réponse semble écrite par vous.</p></div>
+    <div class="feat"><div class="feat-num">03</div><div class="feat-title">Alerte avis négatifs</div><p class="feat-desc">Les 1 et 2 étoiles déclenchent une alerte email immédiate. Réponse empathique proposée, validation manuelle.</p></div>
+    <div class="feat"><div class="feat-num">04</div><div class="feat-title">Dashboard de pilotage</div><p class="feat-desc">Note moyenne, taux de réponse, mots-clés récurrents, temps économisé — tout en temps réel.</p></div>
+    <div class="feat"><div class="feat-num">05</div><div class="feat-title">Connexion Google directe</div><p class="feat-desc">API officielle Google My Business. Les réponses apparaissent directement sur votre fiche Google.</p></div>
+    <div class="feat"><div class="feat-num">06</div><div class="feat-title">Multi-établissements</div><p class="feat-desc">Gérez plusieurs fiches depuis un seul dashboard. Idéal pour les groupes et franchises.</p></div>
+  </div>
+</section>
+
+<div class="how-bg" id="how">
+  <div class="how-inner">
+    <div class="section-head">
+      <h2>Opérationnel<br><em>en 5 minutes.</em></h2>
+    </div>
+    <div class="how-grid">
+      <div class="steps">
+        <div class="step on" onclick="ps(this,'🔗','Connexion Google','Autorisez ReplyGenius à accéder à votre fiche Google My Business. Tous vos avis sont importés instantanément.')">
+          <div class="step-n">01</div><div><div class="step-title">Connectez votre fiche Google</div><div class="step-desc">Liez votre compte en un clic. Tous vos avis importés instantanément.</div></div>
+        </div>
+        <div class="step" onclick="ps(this,'⚙️','Configuration','Décrivez votre établissement, choisissez votre ton. L\'IA apprend votre style.')">
+          <div class="step-n">02</div><div><div class="step-title">Configurez votre profil</div><div class="step-desc">Décrivez votre commerce et choisissez votre ton. L'IA apprend votre style.</div></div>
+        </div>
+        <div class="step" onclick="ps(this,'🤖','IA en action','Chaque nouvel avis reçoit une réponse générée en secondes. Auto ou validation — c\'est vous qui décidez.')">
+          <div class="step-n">03</div><div><div class="step-title">L'IA prend le relais</div><div class="step-desc">Chaque avis reçoit une réponse. Auto ou validation — à vous de choisir.</div></div>
+        </div>
+        <div class="step" onclick="ps(this,'📈','Résultats','Suivez l\'évolution de votre note Google et les tendances depuis le dashboard.')">
+          <div class="step-n">04</div><div><div class="step-title">Regardez votre note grimper</div><div class="step-desc">Suivez l'évolution de votre note et l'impact sur votre réputation.</div></div>
+        </div>
+      </div>
+      <div class="how-vis"><div class="hv-icon" id="hi">🔗</div><div class="hv-title" id="hc">Connexion Google</div><div class="hv-sub" id="hs">Autorisez ReplyGenius à accéder à votre fiche Google My Business. Tous vos avis sont importés instantanément.</div></div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-head">
+    <h2>Ils nous font<br><em>confiance.</em></h2>
+  </div>
+  <div class="tgrid">
+    <div class="tc featured">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"Avant je répondais aux avis le dimanche soir. Maintenant c'est automatique et les réponses sont meilleures que ce que j'écrivais moi-même !"</p>
+      <div class="tc-author"><div class="tc-av">JM</div><div><div class="tc-name">Jean-Marc Petit</div><div class="tc-biz">Restaurant Le Zinc, Lyon</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"Notre note est passée de 3,8 à 4,6 en 3 mois. Répondre à tous les avis, même négatifs, ça change vraiment tout."</p>
+      <div class="tc-author"><div class="tc-av">SL</div><div><div class="tc-name">Sophie Laurent</div><div class="tc-biz">Boulangerie du Marché, Bordeaux</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="tc-stars">★★★★★</div>
+      <p class="tc-text">"4 restaurants gérés pour moins cher qu'une heure de community manager. L'investissement le plus rentable de l'année."</p>
+      <div class="tc-author"><div class="tc-av">KA</div><div><div class="tc-name">Karim Amrani</div><div class="tc-biz">Groupe Saveurs, Paris</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="pricing-bg" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-head">
+      <h2>Simple. Transparent.<br><em>Sans surprise.</em></h2>
+      <p class="sec-sub">Sans engagement. 14 jours d'essai gratuit. Résiliez quand vous voulez.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><sup>€</sup>19<sub>/mois</sub></div>
+        <div class="plan-desc">Pour démarrer sereinement</div>
+        <div class="plan-div"></div>
+        <ul class="plan-feats"><li>1 établissement</li><li>50 avis / mois</li><li>Génération IA</li><li>Validation manuelle</li><li class="off">Réponse automatique</li><li class="off">Multi-établissements</li></ul>
+        <a href="signup.html" class="plan-btn">Commencer</a>
+      </div>
+      <div class="plan pop">
+        <div class="plan-badge">✦ Le plus populaire</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>€</sup>49<sub>/mois</sub></div>
+        <div class="plan-desc">Pour les commerçants actifs</div>
+        <div class="plan-div"></div>
+        <ul class="plan-feats"><li>3 établissements</li><li>Avis illimités</li><li>Réponse automatique</li><li>Alertes avis négatifs</li><li>Dashboard complet</li><li class="off">Marque blanche</li></ul>
+        <a href="signup.html" class="plan-btn">Essayer 14 jours gratuits</a>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Agency</div>
+        <div class="plan-price"><sup>€</sup>149<sub>/mois</sub></div>
+        <div class="plan-desc">Pour agences & multi-sites</div>
+        <div class="plan-div"></div>
+        <ul class="plan-feats"><li>20 établissements</li><li>Tout le plan Pro</li><li>Rapports PDF clients</li><li>Marque blanche</li><li>Support prioritaire</li><li>Accès API</li></ul>
+        <a href="signup.html" class="plan-btn">Nous contacter</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="faq">
+  <div class="faq-inner">
+    <div class="section-head"><h2>Questions<br><em>fréquentes.</em></h2></div>
+    <div class="fi"><div class="fq" onclick="ft(this.parentElement)">Est-ce vraiment automatique ?<div class="ftog">+</div></div><div class="fa">Oui. En mode automatique, l'IA génère et publie sans intervention. En mode semi-auto, elle propose une réponse et vous publiez en un clic. Vous choisissez selon votre préférence.</div></div>
+    <div class="fi"><div class="fq" onclick="ft(this.parentElement)">Google autorise-t-il les réponses automatiques ?<div class="ftog">+</div></div><div class="fa">Oui. Google My Business dispose d'une API officielle. ReplyGenius l'utilise de façon 100% conforme aux conditions d'utilisation de Google.</div></div>
+    <div class="fi"><div class="fq" onclick="ft(this.parentElement)">Les réponses sonnent-elles naturelles ?<div class="ftog">+</div></div><div class="fa">Absolument. L'IA tient compte du contenu précis de chaque avis, du nom du client, de votre type d'établissement et du ton choisi. Chaque réponse est unique et personnalisée.</div></div>
+    <div class="fi"><div class="fq" onclick="ft(this.parentElement)">Que se passe-t-il pour un avis très négatif ?<div class="ftog">+</div></div><div class="fa">Les avis 1 et 2 étoiles ne sont jamais publiés automatiquement. Vous recevez une alerte email avec une réponse empathique à valider avant publication.</div></div>
+    <div class="fi"><div class="fq" onclick="ft(this.parentElement)">Puis-je résilier à tout moment ?<div class="ftog">+</div></div><div class="fa">Oui, sans frais et sans préavis. Votre abonnement continue jusqu'à la fin de la période payée, puis s'arrête automatiquement.</div></div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-box">
+      <div>
+        <h2>Prêt à ne plus jamais<br><em>ignorer un avis ?</em></h2>
+        <p>Rejoignez les commerçants qui font confiance à ReplyGenius pour leur e-réputation.</p>
+      </div>
+      <div class="cta-r">
+        <a href="signup.html" class="btn-gold">Essayer gratuitement</a>
+        <div class="cta-fine">✦ 14 jours · sans carte bancaire</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="flogo">✦ ReplyGenius</div>
+  <div class="flinks"><a href="#">Mentions légales</a><a href="#">CGV</a><a href="#">Contact</a><a href="signup.html">S'inscrire</a></div>
+  <div>© 2025 ReplyGenius. Tous droits réservés.</div>
+</footer>
+
+<script>
+const txt="Merci infiniment Marie ! Vos mots nous touchent profondément — nos croissants sont préparés avec passion chaque matin. Nous vous attendons la semaine prochaine. — L'équipe";
+let i=0;const el=document.getElementById('ht');
+function type(){if(i<txt.length){el.innerHTML=txt.slice(0,++i)+'<span class="cursor"></span>';setTimeout(type,22+Math.random()*16);}else el.innerHTML=txt;}
+setTimeout(type,800);
+function ft(item){item.classList.toggle('open')}
+function ps(row,icon,cap,sub){document.querySelectorAll('.step').forEach(r=>r.classList.remove('on'));row.classList.add('on');document.getElementById('hi').textContent=icon;document.getElementById('hc').textContent=cap;document.getElementById('hs').textContent=sub;}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}})});
+</script>
+</body>
+</html>
